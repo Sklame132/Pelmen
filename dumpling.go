@@ -43,12 +43,14 @@ func main() {
 	
 
 	//Результат
-
+	P_tl, n_dumpM := n_dumpCalculate(Q_day, t, p_dumpM);
+	n_doughM := n_doughCalculate(P_tl, a_t, p_doughM);
+	n_cutter := n_cutterCalculate(P_tl, a_t, p_cutter);
 
 	//Вывод
 	fmt.Printf("Исходные данные\nСуточная выработка готовой продукции (пельменей): %s;\nПродолжительность рабочей смены: %s;\nМассовая доля теста в готовой продукции: %s;\nПроизводительность пельменного автомата: %s;\nПроизводительность тестомесильной машины: %s;\nПроизводительность куттера: %s;\n", formatedData(&Q_day), formatedData(&t), formatedData(&a_t), formatedData(&p_dumpM), formatedData(&p_doughM), formatedData(&p_cutter));
 
-	
+	fmt.Printf("Результаты расчетов\nПроизводительность технологической линии изготовления пельменей: %v\nКоличество пельменных автоматов: %v\nКоличество тестомесильных машин: %v\nКоличество куттеров: %v", P_tl, n_dumpM, n_doughM, n_cutter);
 }
 
 func (d *Data) InputDataValue(reader *bufio.Reader, printableString string) {
@@ -78,4 +80,22 @@ func formatedData(d *Data) string {
 	return fmt.Sprintf("%v %s", d.value, d.unit)
 }
 
+	//Расчеты
 
+func n_dumpCalculate(Q_day, t, p_dumpM Data) (P_tl float64, n_dumpM float64) {
+	P_tl  = Q_day.value / 2 * t.value;
+	n_dumpM = math.Ceil(P_tl / p_dumpM.value);
+	return	
+}
+
+func n_doughCalculate(P_tl float64, a_t, p_doughM Data) (n_doughM float64) {
+	var P_tl2 float64 = (a_t.value * P_tl) / 100;
+	n_doughM = math.Ceil(P_tl2 / p_doughM.value);
+	return 
+}
+
+func n_cutterCalculate(P_tl float64, a_t, p_cutter Data) (n_cutter float64){
+	var P_tl2 = ((100 - a_t.value) * P_tl) / 100;
+	n_cutter = math.Ceil(P_tl2 / p_cutter.value);
+	return
+}
